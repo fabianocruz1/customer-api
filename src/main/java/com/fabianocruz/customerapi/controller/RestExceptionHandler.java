@@ -29,15 +29,12 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(RestException.class)
     public ResponseEntity<RestMessage> handleIllegalArgument(RestException ex, Locale locale) {
-    	System.out.println(".....handleIllegalArgument....");
-
         String errorMessage = messageSource.getMessage(ex.getMessage(), ex.getArgs(), locale);
         return new ResponseEntity<>(new RestMessage(errorMessage), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RestMessage> handleArgumentNotValidException(MethodArgumentNotValidException ex, Locale locale) {
-    	System.out.println(".....handleArgumentNotValidException....");
         BindingResult result = ex.getBindingResult();
         List<String> errorMessages = result.getAllErrors()
                 .stream()
@@ -48,7 +45,6 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<RestMessage> handleExceptions(Exception ex, Locale locale) {
-    	System.out.println(".....handleExceptions....");
         String errorMessage = messageSource.getMessage(UNEXPECTED_ERROR, null, locale);
         ex.printStackTrace();
         return new ResponseEntity<>(new RestMessage(errorMessage), HttpStatus.INTERNAL_SERVER_ERROR);

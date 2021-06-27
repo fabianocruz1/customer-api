@@ -1,14 +1,17 @@
 package com.fabianocruz.customerapi.service;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.fabianocruz.customerapi.model.Customer;
+import com.fabianocruz.customerapi.dto.CustomerDTO;
 
 public interface CustomerService {
-	Page<Customer> readAllCustomers(Pageable pageable);
-	Customer readCustomer(String cpf);
-	void saveCustomer(Customer customer);
-	void updateCustomer(Customer customer, long idCustomer);
-	void deleteCustomer(long idCustomer);
+	Page<CustomerDTO> readAllCustomers(Pageable pageable);
+	CustomerDTO readCustomer(String cpf);
+	void saveCustomer(CustomerDTO customerDto);
+	void deleteCustomer(Long idCustomer);
+	void updateCustomer(CustomerDTO customerDto, Long idCustomer);
+	void updateCustomer(@Valid CustomerDTO customerDTO, String cpf);
 }

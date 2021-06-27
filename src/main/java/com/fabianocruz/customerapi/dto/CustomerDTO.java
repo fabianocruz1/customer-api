@@ -1,5 +1,6 @@
 package com.fabianocruz.customerapi.dto;
 
+import javax.persistence.Id;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -10,6 +11,9 @@ import lombok.Data;
 
 @Data
 public class CustomerDTO {
+
+    @Id
+    private Long id;
 
     @NotNull
     @Size(min=2, max=100)

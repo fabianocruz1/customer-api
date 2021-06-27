@@ -1,48 +1,54 @@
 package com.fabianocruz.customerapi.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fabianocruz.customerapi.dto.CustomerDTO;
-import com.fabianocruz.customerapi.dto.CustomerUpdateDTO;
-import com.fabianocruz.customerapi.model.Customer;
 import com.fabianocruz.customerapi.service.CustomerService;
-import com.fabianocruz.customerapi.util.DTO;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/customers")
 public class CustomerController {
 
 	@Autowired
 	CustomerService customerService;
 	
     @GetMapping
-	public Page<Customer> readAllCustomers(@RequestParam("page") int pageIndex, 
+	public Page<CustomerDTO> readAllCustomers(@RequestParam("page") int pageIndex, 
             @RequestParam("size") int pageSize) {
     	return customerService.readAllCustomers(PageRequest.of(pageIndex, pageSize));
 	}
 
     @GetMapping(value = "/{cpf}" )
-	public Customer readCustomer(@PathVariable String cpf) {
+	public CustomerDTO readCustomer(@PathVariable String cpf) {
     	System.out.println("readCustomer "+ cpf);
     	return customerService.readCustomer(cpf);
 	}
 
 	@PostMapping
-	public void saveCustomer(@DTO(CustomerDTO.class) Customer customer) {
-		customerService.saveCustomer(customer);
+	public void saveCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
+		customerService.saveCustomer(customerDTO);
 	}
 	
-	@PutMapping("/{idCustomer}")
-	public void updateCustomer(@DTO(CustomerUpdateDTO.class) Customer customer) {
-		customerService.saveCustomer(customer);
+	@DeleteMapping("/{idCustomer}")
+	public void deleteCustomer(@PathVariable Long idCustomer) {
+		customerService.deleteCustomer(idCustomer);
+	}	
+	
+	@PutMapping("/{cpf}")
+	public void updateCustomer(@Valid @RequestBody CustomerDTO customerDTO, @PathVariable String cpf) {
+		customerService.updateCustomer(customerDTO, cpf);
 	}
 }
