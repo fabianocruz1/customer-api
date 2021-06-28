@@ -26,14 +26,13 @@ public class CustomerController {
 	CustomerService customerService;
 	
     @GetMapping
-	public Page<CustomerDTO> readAllCustomers(@RequestParam("page") int pageIndex, 
-            @RequestParam("size") int pageSize) {
+	public Page<CustomerDTO> readAllCustomers(@RequestParam(value="page", defaultValue = "0") int pageIndex, 
+            @RequestParam(value="size", defaultValue = "10") int pageSize) {
     	return customerService.readAllCustomers(PageRequest.of(pageIndex, pageSize));
 	}
 
     @GetMapping(value = "/{cpf}" )
 	public CustomerDTO readCustomer(@PathVariable String cpf) {
-    	System.out.println("readCustomer "+ cpf);
     	return customerService.readCustomer(cpf);
 	}
 
